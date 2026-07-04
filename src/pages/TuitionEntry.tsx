@@ -89,6 +89,7 @@ export default function TuitionEntry() {
       setError('Vui lòng chọn học sinh từ danh sách gợi ý');
       return;
     }
+    if (!supabase) { setError('Không có kết nối database'); return; }
     setSaving(true);
     try {
       const existing = monthPayments.find((p) => p.student_id === matchedStudent);
@@ -130,6 +131,7 @@ export default function TuitionEntry() {
 
   const handleDeletePayment = async (id: number) => {
     if (!confirm('Xóa bản ghi học phí này?')) return;
+    if (!supabase) return;
     await supabase.from('payments').delete().eq('id', id);
     await refresh();
   };

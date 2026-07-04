@@ -43,6 +43,7 @@ export default function ClassManagement() {
       setError('Vui lòng nhập khối hợp lệ (số)');
       return;
     }
+    if (!supabase) { setError('Không có kết nối database'); return; }
     setSaving(true);
     try {
       const payload = { name: form.name.trim(), grade: gradeNum };
@@ -69,6 +70,7 @@ export default function ClassManagement() {
       return;
     }
     if (!confirm('Xóa lớp học này?')) return;
+    if (!supabase) return;
     await supabase.from('classes').delete().eq('id', id);
     await refresh();
   };

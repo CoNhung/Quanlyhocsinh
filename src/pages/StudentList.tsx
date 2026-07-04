@@ -89,6 +89,7 @@ export default function StudentList() {
       setError('Vui lòng nhập số điện thoại');
       return;
     }
+    if (!supabase) { setError('Không có kết nối database'); return; }
     setSaving(true);
     try {
       const payload = {
@@ -138,6 +139,7 @@ export default function StudentList() {
 
   const handleDelete = async (id: number) => {
     if (!confirm('Xóa học sinh này? Hành động không thể hoàn tác.')) return;
+    if (!supabase) return;
     await supabase.from('student_subjects').delete().eq('student_id', id);
     await supabase.from('payments').delete().eq('student_id', id);
     await supabase.from('students').delete().eq('id', id);

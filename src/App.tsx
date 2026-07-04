@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, Component, type ReactNode } from 'react';
 import {
   LayoutDashboard,
   Users,
@@ -30,6 +30,30 @@ const NAV_ITEMS: { id: PageId; label: string; icon: typeof LayoutDashboard }[] =
   { id: 'unpaid', label: 'Chưa đóng học phí', icon: AlertCircle },
   { id: 'recent', label: 'Đóng gần đây', icon: TrendingUp },
 ];
+
+class ErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean; error?: string }> {
+  state = { hasError: false, error: '' };
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error: error.message };
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
+          <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md text-center">
+            <AlertCircle className="w-16 h-16 text-rose-500 mx-auto mb-4" />
+            <h1 className="text-xl font-bold text-slate-800 mb-2">Đã có lỗi xảy ra</h1>
+            <p className="text-slate-600 mb-4">{this.state.error}</p>
+            <button onClick={() => window.location.reload()} className="px-4 py-2 bg-emerald-600 text-white rounded-lg">
+              Tải lại trang
+            </button>
+          </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 function MainApp() {
   const { isAuthenticated, logout } = useAuth();
@@ -143,8 +167,10 @@ function MainApp() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <MainApp />
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <MainApp />
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }

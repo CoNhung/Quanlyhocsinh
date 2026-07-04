@@ -13,6 +13,7 @@ export function useClasses() {
   const [loading, setLoading] = useState(true);
 
   const refresh = useCallback(async () => {
+    if (!supabase) { setLoading(false); return; }
     setLoading(true);
     const { data, error } = await supabase
       .from('classes')
@@ -35,6 +36,7 @@ export function useSubjects() {
   const [loading, setLoading] = useState(true);
 
   const refresh = useCallback(async () => {
+    if (!supabase) { setLoading(false); return; }
     setLoading(true);
     const { data, error } = await supabase
       .from('subjects')
@@ -56,6 +58,7 @@ export function useStudents() {
   const [loading, setLoading] = useState(true);
 
   const refresh = useCallback(async () => {
+    if (!supabase) { setLoading(false); return; }
     setLoading(true);
     const { data, error } = await supabase
       .from('students')
@@ -77,6 +80,7 @@ export function useStudentSubjects() {
   const [loading, setLoading] = useState(true);
 
   const refresh = useCallback(async () => {
+    if (!supabase) { setLoading(false); return; }
     setLoading(true);
     const { data, error } = await supabase
       .from('student_subjects')
@@ -97,6 +101,7 @@ export function usePayments() {
   const [loading, setLoading] = useState(true);
 
   const refresh = useCallback(async () => {
+    if (!supabase) { setLoading(false); return; }
     setLoading(true);
     const { data, error } = await supabase
       .from('payments')
